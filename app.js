@@ -1,5 +1,5 @@
 const express = require("express");
-const joi = require("@hapi/joi");
+const Joi = require("@hapi/joi");
 const app = express();
 
 app.use(express.json());
@@ -15,10 +15,16 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/barang", (req, res) => {
-  res.send("barang api");
+  res.send(barangs);
 });
 
 app.post("/api/barang", (req, res) => {
+  const { error } = validateBarang(req.body);
+  if (error) {
+    res.status(400).send(error.details[0].message);
+    return;
+  }
+
   const barang = {
     id: barangs.length + 1,
     name: req.body.name
@@ -30,6 +36,37 @@ app.post("/api/barang", (req, res) => {
 app.get("/api/barang/:id", (req, res) => {
   const barang = barangs.find(c => c.id === parseInt(req.params.id));
   if (!barang) res.status(404).send("not found");
+  res.send(barang);
+});
+
+app.put("/api/barang/:id", (req, res) => {
+  const barang = barangs.find(c => c.id === parseInt(req.params.id));
+  if (!barang) return res.status(404).send("not found");
+
+  const { error } = validateBarang(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  barang.name = req.body.name;
+  res.send(barang);
+});
+
+function validateBarang(barang) {
+  const schema = Joi.object({
+    name: Joi.string()
+      .min(3)
+      .required()
+  });
+  //   console.log(Joi.validate(req.body, schema));
+  return schema.validate(barang);
+}
+
+app.delete("/api/barang/:id", (req, res) => {
+  const barang = barangs.find(c => c.id === parseInt(req.params.id));
+  if (!barang) res.status(404).send("not found");
+
+  const index = barangs.indexOf(barang);
+  barangs.splice(index, 1);
+
   res.send(barang);
 });
 
