@@ -20,10 +20,7 @@ app.get("/api/barang", (req, res) => {
 
 app.post("/api/barang", (req, res) => {
   const { error } = validateBarang(req.body);
-  if (error) {
-    res.status(400).send(error.details[0].message);
-    return;
-  }
+  if (error) return res.status(400).send(error.details[0].message);
 
   const barang = {
     id: barangs.length + 1,
@@ -35,7 +32,7 @@ app.post("/api/barang", (req, res) => {
 
 app.get("/api/barang/:id", (req, res) => {
   const barang = barangs.find(c => c.id === parseInt(req.params.id));
-  if (!barang) res.status(404).send("not found");
+  if (!barang) return res.status(404).send("not found");
   res.send(barang);
 });
 
@@ -62,7 +59,7 @@ function validateBarang(barang) {
 
 app.delete("/api/barang/:id", (req, res) => {
   const barang = barangs.find(c => c.id === parseInt(req.params.id));
-  if (!barang) res.status(404).send("not found");
+  if (!barang) return res.status(404).send("not found");
 
   const index = barangs.indexOf(barang);
   barangs.splice(index, 1);
