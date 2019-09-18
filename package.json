@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ramdanistudent/seminar_program_api#readme",
   "dependencies": {
+    "@hapi/joi": "^16.1.1",
     "express": "^4.17.1",
     "nodemon": "^1.19.2"
   }
