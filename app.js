@@ -1,8 +1,19 @@
 const express = require("express");
 const Joi = require("@hapi/joi");
+const logger = require("./logger");
+const helmet = require("helmet");
+const morgan = require("morgan");
 const app = express();
 
 app.use(express.json());
+app.use(express.static("public"));
+app.use(helmet());
+app.use(logger);
+
+if (app.get("env") === "development") {
+  console.log("development mode");
+  app.use(morgan("tiny"));
+}
 
 const barangs = [
   { id: 1, name: "printer" },
