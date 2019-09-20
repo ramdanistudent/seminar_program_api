@@ -1,0 +1,6 @@
+{
+  "name": "Seminar Program App prod",
+  "mail": {
+    "host": "prod-mail-server"
+  }
+}

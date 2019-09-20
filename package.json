@@ -22,6 +22,7 @@
   "homepage": "https://github.com/ramdanistudent/seminar_program_api#readme",
   "dependencies": {
     "@hapi/joi": "^16.1.1",
+    "config": "^3.2.2",
     "express": "^4.17.1",
     "helmet": "^3.21.0",
     "morgan": "^1.9.1",

@@ -3,8 +3,10 @@ const Joi = require("@hapi/joi");
 const logger = require("./logger");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const config = require("config");
 const app = express();
 
+console.log("password : " + config.get("Customer.credit.initialDays"));
 app.use(express.json());
 app.use(express.static("public"));
 app.use(helmet());
