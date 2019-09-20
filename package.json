@@ -23,9 +23,11 @@
   "dependencies": {
     "@hapi/joi": "^16.1.1",
     "config": "^3.2.2",
+    "debug": "^4.1.1",
     "express": "^4.17.1",
     "helmet": "^3.21.0",
     "morgan": "^1.9.1",
-    "nodemon": "^1.19.2"
+    "nodemon": "^1.19.2",
+    "pug": "^2.0.4"
   }
 }

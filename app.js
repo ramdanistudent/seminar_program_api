@@ -1,3 +1,4 @@
+const startupDebugger = require("debug")("app:startup");
 const express = require("express");
 const Joi = require("@hapi/joi");
 const logger = require("./logger");
@@ -6,6 +7,9 @@ const morgan = require("morgan");
 const config = require("config");
 const app = express();
 
+app.set("view engine", "pug");
+app.set("views", "./views");
+
 console.log("password : " + config.get("Customer.credit.initialDays"));
 app.use(express.json());
 app.use(express.static("public"));
@@ -13,7 +17,7 @@ app.use(helmet());
 app.use(logger);
 
 if (app.get("env") === "development") {
-  console.log("development mode");
+  startupDebugger("development mode");
   app.use(morgan("tiny"));
 }
 
