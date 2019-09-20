@@ -4,7 +4,7 @@
       "host": "PROD_SERVER"
     },
     "credit": {
-      "initialDays": "app_password"
+      "pass": "app_password"
     },
     "settings": {
       "adminAccounts": {
