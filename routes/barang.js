@@ -1,63 +1,60 @@
 const express = require("express");
-const Joi = require("@hapi/joi");
+const { Barang, validate } = require("../models/barang");
 
 const router = express.Router();
 
-const barangs = [
-  { id: 1, name: "printer" },
-  { id: 2, name: "laptop" },
-  { id: 3, name: "monitor" }
-];
-
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+  const barangs = await Barang.find().sort("nama");
   res.send(barangs);
 });
 
-router.post("/", (req, res) => {
-  const { error } = validateBarang(req.body);
+router.post("/", async (req, res) => {
+  const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const barang = {
-    id: barangs.length + 1,
-    name: req.body.name
-  };
-  barangs.push(barang);
-  res.send(barang);
-});
-
-router.get("/:id", (req, res) => {
-  const barang = barangs.find(c => c.id === parseInt(req.params.id));
-  if (!barang) return res.status(404).send("not found");
-  res.send(barang);
-});
-
-router.put("/:id", (req, res) => {
-  const barang = barangs.find(c => c.id === parseInt(req.params.id));
-  if (!barang) return res.status(404).send("not found");
-
-  const { error } = validateBarang(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  barang.name = req.body.name;
-  res.send(barang);
-});
-
-function validateBarang(barang) {
-  const schema = Joi.object({
-    name: Joi.string()
-      .min(3)
-      .required()
+  let barang = new Barang({
+    no: req.body.no,
+    nama: req.body.nama,
+    stok: req.body.stok,
+    jenis: req.body.jenis,
+    venue: req.body.venue
   });
-  //   console.log(Joi.validate(req.body, schema));
-  return schema.validate(barang);
-}
 
-router.delete("/:id", (req, res) => {
-  const barang = barangs.find(c => c.id === parseInt(req.params.id));
+  barang = await barang.save();
+  res.send(barang);
+});
+
+router.get("/:id", async (req, res) => {
+  const barang = Barang.findById(req.params, id);
+
+  if (!barang) return res.status(404).send("not found");
+  res.send(barang);
+});
+
+router.put("/:id", async (req, res) => {
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  const barang = await Barang.findByIdAndUpdate(
+    req.params.id,
+    {
+      no: req.body.no,
+      nama: req.body.nama,
+      stok: req.body.stok,
+      jenis: req.body.jenis,
+      venue: req.body.venue
+    },
+    { new: true }
+  );
   if (!barang) return res.status(404).send("not found");
 
-  const index = barangs.indexOf(barang);
-  barangs.splice(index, 1);
+  res.send(barang);
+});
+
+router.delete("/:id", async (req, res) => {
+  const barang = await Barang.findByIdAndRemove(req.params.id);
+
+  if (!barang) return res.status(404).send("not found");
 
   res.send(barang);
 });
