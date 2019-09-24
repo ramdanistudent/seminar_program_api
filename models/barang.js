@@ -1,5 +1,6 @@
 const Joi = require("@hapi/joi");
 const mongoose = require("mongoose");
+const { jenisSchemma } = require("./jenis");
 
 const Barang = mongoose.model(
   "Barang",
@@ -21,10 +22,8 @@ const Barang = mongoose.model(
       min: 1
     },
     jenis: {
-      type: String,
-      required: true,
-      minlength: 2,
-      maxlength: 5
+      type: jenisSchemma,
+      required: true
     },
     venue: {
       type: String,
@@ -46,9 +45,7 @@ function validateBarang(barang) {
     stok: Joi.number()
       .min(1)
       .required(),
-    jenis: Joi.string()
-      .min(2)
-      .required(),
+    jenisId: Joi.string().required(),
     venue: Joi.string()
       .min(2)
       .required()

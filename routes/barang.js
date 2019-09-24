@@ -1,5 +1,6 @@
 const express = require("express");
 const { Barang, validate } = require("../models/barang");
+const { Jenis } = require("../models/jenis");
 
 const router = express.Router();
 
@@ -12,11 +13,17 @@ router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  const jenis = await Jenis.findById(re.body.jenisId);
+  if (!jenis) return res.status(400).send("Invalid Jenis");
+
   let barang = new Barang({
     no: req.body.no,
     nama: req.body.nama,
     stok: req.body.stok,
-    jenis: req.body.jenis,
+    jenis: {
+      _id: jenis._id,
+      nama_jenis: jenis.nama_jenis
+    },
     venue: req.body.venue
   });
 
