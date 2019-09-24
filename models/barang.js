@@ -1,6 +1,6 @@
 const Joi = require("@hapi/joi");
 const mongoose = require("mongoose");
-const { jenisSchemma } = require("./jenis");
+const { jenisSchema } = require("./jenis");
 
 const Barang = mongoose.model(
   "Barang",
@@ -22,7 +22,7 @@ const Barang = mongoose.model(
       min: 1
     },
     jenis: {
-      type: jenisSchemma,
+      type: jenisSchema,
       required: true
     },
     venue: {

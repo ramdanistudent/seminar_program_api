@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const barang = Barang.findById(req.params, id);
+  const barang = await Barang.findById(req.params.id);
 
   if (!barang) return res.status(404).send("not found");
   res.send(barang);

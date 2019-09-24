@@ -18,10 +18,12 @@ mongoose
 
 app.use(express.json());
 //Router
-const routerBarang = require("./routes/barang");
 const routerHome = require("./routes/home");
+const routerBarang = require("./routes/barang");
+const routerJenis = require("./routes/jenis");
 app.use("/", routerHome);
 app.use("/api/barang", routerBarang);
+app.use("/api/jenis", routerJenis);
 
 app.set("view engine", "pug");
 app.set("views", "./views");
