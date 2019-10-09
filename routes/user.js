@@ -1,4 +1,6 @@
 const express = require("express");
+const _ = require("lodash");
+const bcrypt = require("bcrypt");
 const { User, validate } = require("../models/user");
 
 const router = express.Router();
@@ -9,16 +11,15 @@ router.post("/", async (req, res) => {
 
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User Email has alredy exist");
-  user = new User({
-    nama: req.body.nama,
-    email: req.body.email,
-    password: req.body.password,
-    alamat: req.body.alamat,
-    noHp: req.body.noHp
-  });
+  user = new User(
+    _.pick(req.body, ["nama", "email", "password", "alamat", "noHp"])
+  );
+
+  const saltRound = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, saltRound);
 
   await user.save();
-  res.send(user);
+  res.send(_.pick(user, ["nama", "email"]));
 });
 
 module.exports = router;
