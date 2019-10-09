@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const jenis = await Jenis.findById(re.body.jenisId);
+  const jenis = await Jenis.findById(req.body.jenisId);
   if (!jenis) return res.status(400).send("Invalid Jenis");
 
   let barang = new Barang({

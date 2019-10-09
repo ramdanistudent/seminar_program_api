@@ -5,6 +5,10 @@ const express = require("express");
 const logger = require("./middleware/logger");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const routerHome = require("./routes/home");
+const routerBarang = require("./routes/barang");
+const routerJenis = require("./routes/jenis");
+const routerUser = require("./routes/user");
 const app = express();
 
 //connect database
@@ -18,13 +22,10 @@ mongoose
 
 app.use(express.json());
 //Router
-const routerHome = require("./routes/home");
-const routerBarang = require("./routes/barang");
-const routerJenis = require("./routes/jenis");
 app.use("/", routerHome);
 app.use("/api/barang", routerBarang);
 app.use("/api/jenis", routerJenis);
-
+app.use("/api/user", routerUser);
 app.set("view engine", "pug");
 app.set("views", "./views");
 

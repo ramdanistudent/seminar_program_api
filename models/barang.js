@@ -50,7 +50,7 @@ function validateBarang(barang) {
       .min(2)
       .required()
   });
-  //   console.log(Joi.validate(req.body, schema));
+
   return schema.validate(barang);
 }
 
